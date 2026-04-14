@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Maya's Student Life Cycle Journey</title>
+		<style>
+			:root
+			{
+				--bg1:#f7f7ff;
+				--bg2:#eef9ff;
+				--text:#1f2a44;
+				--muted:#5f6b85;
+				--white:#ffffff;
+				--line:#dce5f5;
+				--shadow:0 18px 45px rgba(20,30,60,.10);
+
+				--c1:#6366f1;
+				--c2:#8b5cf6;
+				--c3:#f97316;
+				--c4:#ef4444;
+				--c5:#10b981;
+				--c6:#14b8a6;
+				--c7:#a855f7;
+				--c8:#f59e0b;
+				--c9:#fb7185;
+			}
+
+			*{box-sizing:border-box}
+
+			body
+			{
+				margin:0;
+				font-family:Inter,Segoe UI,Arial,sans-serif;
+				color:var(--text);
+				background:
+				radial-gradient(circle at top left, rgba(99,102,241,.10), transparent 25%),
+				radial-gradient(circle at top right, rgba(168,85,247,.10), transparent 25%),
+				linear-gradient(180deg,var(--bg1),var(--bg2));
+			}
+
+			.wrap
+			{
+				width:calc(100% - 32px);
+				max-width:1800px;
+				margin:0 auto;
+				padding:28px 0 40px;
+			}
+
+			.hero
+			{
+				background:linear-gradient(135deg,#ffffff,#f8fbff,#faf5ff);
+				border:1px solid #e6ecf7;
+				border-radius:32px;
+				box-shadow:var(--shadow);
+				padding:28px;
+				margin-bottom:22px;
+				overflow:auto;
+				position:relative;
+				width:100%;
+				max-width:none;
+			}
+
+			.hero h1
+			{
+				margin:0 0 8px;
+				font-size:clamp(2rem,5vw,3.8rem);
+				line-height:1;
+			}
+			.hero h3
+			{
+				margin:0 0 12px;
+				font-size:clamp(1.1rem, 2.2vw, 1.6rem);
+				font-weight:400;
+				line-height:1.3;
+				color:var(--muted);
+			}
+
+			.hero p
+			{
+				margin:0;
+				max-width:980px;
+				color:var(--muted);
+				font-size:1.05rem;
+			}
+
+			.badge
+			{
+				display:inline-block;
+				margin-bottom:12px;
+				padding:8px 12px;
+				border-radius:999px;
+				background:#eef2ff;
+				color:#4338ca;
+				font-weight:700;
+				font-size:.85rem;
+			}
+
+			.story-grid
+			{
+				display:grid;
+				grid-template-columns:minmax(650px, 1.3fr) minmax(700px, 1.7fr);
+				gap:28px;
+				align-items:start;
+			}
+
+			.panel
+			{
+				background:rgba(255,255,255,.94);
+				border:1px solid #e2e8f5;
+				border-radius:28px;
+				box-shadow:var(--shadow);
+			}
+
+			.journey-panel
+			{
+				padding:22px;
+				position:sticky;
+				top:16px;
+			}
+
+			.detail-panel
+			{
+				width:100%;
+				max-width:none;
+				overflow:hidden;
+			}
+
+			.detail-head
+			{
+				padding:20px 22px 16px;
+				border-bottom:1px solid #e6ecf7;
+				background:linear-gradient(135deg,#f9fbff,#faf7ff);
+			}
+
+			.detail-head h2{
+			margin:0 0 6px;
+			font-size:1.75rem;
+			}
+
+			.detail-head p
+			{
+				margin:0;
+				color:var(--muted);
+				font-size:1rem;
+			}
+
+			.road
+			{
+				position:relative;
+				margin-top:16px;
+				min-height:900px;
+				border-radius:24px;
+				background:linear-gradient(180deg,#ffffff,#f8fbff);
+				border:1px solid #edf2fb;
+				overflow:hidden;
+				padding:48px 44px 60px;
+			}
+
+			.road svg.path
+			{
+				position:absolute;
+				inset:0;
+				width:100%;
+				height:100%;
+				pointer-events:none;
+			}
+
+			.stage
+			{
+				position:absolute;
+				width:230px;
+				transform:translate(-50%,-50%);
+				text-align:center;
+				z-index:2;
+				border:none;
+				background:transparent;
+				padding:0;
+				cursor:pointer;
+			}
+
+			.stage-dot
+			{
+				width:68px;
+				height:68px;
+				border-radius:22px;
+				margin:0 auto 10px;
+				display:grid;
+				place-items:center;
+				color:#fff;
+				font-weight:900;
+				font-size:1.08rem;
+				box-shadow:0 12px 30px rgba(0,0,0,.12);
+				border:4px solid rgba(255,255,255,.88);
+				transition:transform .35s ease, box-shadow .35s ease, filter .35s ease;
+			}
+
+			.stage h3
+			{
+				margin:6px 0 0;
+				font-size:1rem;
+				line-height:1.3;
+				font-weight:800;
+				max-width:220px;
+				margin-left:auto;
+				margin-right:auto;
+			}
+
+			.stage.active .stage-dot
+			{
+				transform:scale(1.12);
+				box-shadow:0 16px 38px rgba(37,99,235,.22);
+				filter:saturate(1.1);
+			}
+
+			.maya
+			{
+				position:absolute;
+				left:0;
+				top:0;
+				z-index:3;
+				transform:translate(-50%,-50%);
+				transition:left 1s ease, top 1s ease;
+				pointer-events:none;
+				text-align:center;
+			}
+
+			.maya-human
+			{
+				position:relative;
+				width:72px;
+				height:132px;
+				margin:0 auto;
+			}
+
+			.maya-head
+			{
+				position:absolute;
+				top:0;
+				left:50%;
+				transform:translateX(-50%);
+				width:42px;
+				height:42px;
+				border-radius:50%;
+				background:linear-gradient(180deg, #ffd9b8, #ffc18c);
+				border:3px solid #fff;
+				box-shadow:0 8px 20px rgba(0,0,0,.15);
+				z-index:3;
+			}
+
+			.maya-head::before,
+			.maya-head::after
+			{
+				content:"";
+				position:absolute;
+				top:17px;
+				width:4px;
+				height:4px;
+				border-radius:50%;
+				background:#2b2b2b;
+			}
+
+			.maya-head::before{ left:11px; }
+			.maya-head::after{ right:11px; }
+
+			.maya-hair
+			{
+				position:absolute;
+				top:-4px;
+				left:2px;
+				width:36px;
+				height:22px;
+				background:#3b1f12;
+				border-radius:20px 20px 14px 14px;
+			}
+			.maya-hair::after 
+			{
+				content: "";
+				position: absolute;
+				top: 14px;
+				left: -4px;
+				width: 44px;
+				height: 18px;
+				background: #3b1f12;
+				border-radius: 14px;
+			}
+
+			.maya-body 
+			{
+				position: absolute;
+				top: 38px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 30px;
+				height: 44px;
+				border-radius: 16px 16px 18px 18px; /* softer lower curve */
+				background: linear-gradient(180deg, #a855f7, #7c3aed);
+				border: 3px solid #fff;
+				box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+			}
+
+			.maya-body::after 
+			{
+				content: "";
+				position: absolute;
+				bottom: -8px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 36px;
+				height: 16px;
+				background: #7c3aed;
+				border-radius: 0 0 18px 18px;
+			}
+			.maya-arm
+			{
+				position:absolute;
+				top:46px;
+				width:24px;
+				height:6px;
+				background:#ffc18c;
+				border-radius:6px;
+			}
+
+			.maya-arm.left{ left:6px; transform:rotate(24deg); }
+			.maya-arm.right{ right:6px; transform:rotate(-24deg); }
+
+			.maya-leg
+			{
+				position:absolute;
+				top:78px;
+				width:7px;
+				height:34px;
+				background:#1f2a44;
+				border-radius:8px;
+			}
+
+			.maya-leg.left{ left:26px; }
+			.maya-leg.right{ right:26px; }
+
+			.maya-shoe
+			{
+				position:absolute;
+				top:108px;
+				width:16px;
+				height:8px;
+				background:#111827;
+				border-radius:10px;
+			}
+
+			.maya-shoe.left{ left:20px; }
+			.maya-shoe.right{ right:20px; }
+
+			.maya-label
+			{
+				margin-top:4px;
+				display:inline-block;
+				padding:6px 10px;
+				background:#fff;
+				border-radius:999px;
+				font-size:.8rem;
+				font-weight:800;
+				color:#4f46e5;
+				box-shadow:0 8px 20px rgba(0,0,0,.1);
+			}
+
+			.detail-body
+			{
+				padding:22px 24px 28px;
+				display:grid;
+				grid-template-columns:1fr;
+				gap:18px;
+			}
+
+			.maya-story
+			{
+				border-radius:18px;
+				padding:16px 18px;
+				background:linear-gradient(135deg,#eef4ff,#f8faff);
+				border:1px solid #dce7ff;
+				font-size:1.03rem;
+				line-height:1.6;
+			}
+
+			.cards
+			{
+				width:100%;
+				max-width:none;
+			}
+
+			.card
+			{
+				width:100%;
+				max-width:none;
+				background:#fff;
+				border:1px solid #e5ebf6;
+				border-radius:20px;
+				padding:24px 28px;
+				box-shadow:0 8px 24px rgba(17,35,68,.05);
+				min-height:320px;
+				overflow:visible;
+			}
+
+			.card h4
+			{
+				margin:0 0 14px;
+				font-size:1.14rem;
+			}
+
+			.card ul
+			{
+				margin:0;
+				padding-left:20px;
+				min-width:0;
+				width:100%;
+			}
+
+			.card li
+			{
+				margin:0 0 12px;
+				color:#5f6b85;
+				font-size:1.02rem;
+				line-height:1.55;
+				white-space:normal;
+			}
+
+			.floating
+			{
+				display:flex;
+				flex-wrap:wrap;
+				gap:8px;
+				margin-top:6px;
+			}
+
+			.pill
+			{
+				display:inline-flex;
+				align-items:center;
+				padding:8px 12px;
+				border-radius:999px;
+				font-size:.84rem;
+				font-weight:700;
+				border:1px solid transparent;
+			}
+
+			.pill.support
+			{
+				background:#f5edff;
+				color:#7e22ce;
+				border-color:#ead8ff;
+			}
+
+			.pill.academic
+			{
+				background:#ecf4ff;
+				color:#1d4ed8;
+				border-color:#d7e5ff;
+			}
+
+			.legend
+			{
+				margin-top:14px;
+				font-size:.92rem;
+				color:var(--muted);
+			}
+
+			.controls
+			{
+				display:flex;
+				gap:10px;
+				margin-top:14px;
+				flex-wrap:wrap;
+			}
+
+			button.ctrl
+			{
+				border:none;
+				border-radius:14px;
+				padding:11px 16px;
+				font-weight:800;
+				cursor:pointer;
+			}
+
+			.btn-primary
+			{
+				background:linear-gradient(135deg,#2563eb,#7c3aed);
+				color:#fff;
+			}
+
+			.btn-secondary
+			{
+				background:#eef3ff;
+				color:#31456a;
+			}
+
+			@media (min-width: 1700px)
+			{
+				.story-grid
+				{
+					grid-template-columns:750px 1fr;
+				}
+
+				.road
+				{
+					min-height:880px;
+				}
+
+				.cards
+				{
+					grid-template-columns:repeat(3, 1fr);
+				}
+			}
+
+			@media (max-width: 1400px)
+			{
+				.story-grid
+				{
+					grid-template-columns:minmax(560px, 1.2fr) minmax(680px, 1.8fr);
+				}
+			}
+
+			@media (max-width: 1200px)
+			{
+				.story-grid
+				{
+					grid-template-columns:1fr;
+				}
+
+				.journey-panel
+				{
+					position:relative;
+					top:auto;
+				}
+
+				.cards
+				{
+					grid-template-columns:1fr;
+				}
+
+				.road
+				{
+					min-height:720px;
+				}
+			}
+
+			@media (max-width: 900px)
+			{
+				.wrap
+				{
+					width:calc(100% - 20px);
+				}
+
+				.road
+				{
+					min-height:680px;
+					padding:28px 20px 36px;
+				}
+
+				.stage
+				{
+					width:160px;
+				}
+			}
+			.top-nav
+			{
+				position:sticky;
+				top:0;
+				z-index:1000;
+				padding:14px 24px;
+				background:#ffffff;
+				border-bottom:1px solid #e5eaf5;
+				box-shadow:0 6px 16px rgba(0,0,0,.05);
+			}
+
+			.top-nav a
+			{
+				margin-right:20px;
+				font-weight:700;
+				color:#2563eb;
+				text-decoration:none;
+			}
+
+			.container 
+			{
+				width: min(calc(100% - 2rem), var(--max));
+				margin: 0 auto;
+			}
+			
+			.footer
+			{
+				margin-top:24px;
+				padding:18px 22px;
+				border-radius:16px;
+
+				background:linear-gradient(135deg, #f8fbff, #f3f6ff);
+				border:1px solid #e3e9f7;
+
+				color:#5f6b85;
+				font-size:0.95rem;
+				line-height:1.6;
+
+				box-shadow:0 8px 20px rgba(0,0,0,0.04);
+			}
+			.eyebrow 
+			{
+				display: inline-flex;
+				align-items: center;
+				gap: .45rem;
+				background: rgba(37,99,235,0.10);
+				color: var(--primary);
+				border: 1px solid rgba(37,99,235,0.12);
+				border-radius: 999px;
+				padding: 0.45rem 0.85rem;
+				font-size: 0.86rem;
+				font-weight: 800;
+				letter-spacing: 0.01em;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="top-nav">
+			<a href="index.html">&#8678; Home</a>  
+		</nav>
+		
+		<div class="wrap">
+		
+			<section class="hero">
+				<div class="eyebrow">Prepared for Madison College IE</div>
+				<h1>Maya's Journey to Complete Her Dental Assistant Program</h1>
+				<h3>Maya starts as a prospect, becomes an applicant, enrolls, registers, progresses academically, engages in campus activities, graduates, and moves into career.</h3>				
+			</section>
+
+			<section class="story-grid">
+				<div class="panel journey-panel">
+					<h2 style="margin:0 0 6px;">Maya’s Journey Map</h2>
+					<p style="margin:0;color:var(--muted);">
+						Maya moves across the full college journey. Click any stage or press play.
+					</p>
+
+					<div class="road" id="road">
+						<svg class="path" viewBox="0 0 1000 820" preserveAspectRatio="none" aria-hidden="true">
+							<path d="M70,170 C190,80 300,80 400,175 S620,280 720,205 S870,115 930,205
+									S840,430 715,430 S500,380 390,485 S200,710 100,665"
+									fill="none" stroke="#d9e3f6" stroke-width="16" stroke-linecap="round"/>
+							<path d="M70,170 C190,80 300,80 400,175 S620,280 720,205 S870,115 930,205
+									S840,430 715,430 S500,380 390,485 S200,710 100,665"
+									fill="none" stroke="url(#grad)" stroke-width="6" stroke-linecap="round"/>
+							<defs>
+								<linearGradient id="grad" x1="0" x2="1">
+									<stop offset="0%" stop-color="#6366f1"/>
+									<stop offset="50%" stop-color="#10b981"/>
+									<stop offset="100%" stop-color="#fb7185"/>
+								</linearGradient>
+							</defs>
+						</svg>
+
+						<div class="maya" id="maya">
+							<div class="maya-human">
+								<div class="maya-head">
+									<div class="maya-hair"></div>
+								</div>
+								<div class="maya-arm left"></div>
+								<div class="maya-arm right"></div>
+								<div class="maya-body"></div>
+								<div class="maya-leg left"></div>
+								<div class="maya-leg right"></div>
+								<div class="maya-shoe left"></div>
+								<div class="maya-shoe right"></div>
+							</div>
+							<div class="maya-label">Maya</div>
+						</div>
+					</div>
+
+					<div class="controls">
+						<button class="ctrl btn-primary" id="playBtn">Play Journey</button>
+						<button class="ctrl btn-secondary" id="pauseBtn">Pause</button>
+					</div>
+
+				</div>
+
+				<div class="panel detail-panel">
+					<div class="detail-head">
+						<h2 id="title">Prospect & Recruitment</h2>
+						<p id="desc"></p>
+					</div>
+
+					<div class="detail-body">
+						<div class="maya-story" id="mayaStory"></div>
+
+						<div class="cards">
+							<div class="card">
+								<h4>Key Business Processes</h4>
+								<ul id="activities"></ul>
+							</div>
+						</div>
+						
+						<div>
+							<h4 style="margin:4px 0 10px;">Units Supporting Maya</h4>
+							<div class="floating" id="supportPills"></div>
+						</div>
+
+						<div>
+							<h4 style="margin:4px 0 10px;">Academic Context Around Maya</h4>
+							<div class="floating" id="academicPills"></div>
+						</div>
+					</div>
+				
+				</div>
+			
+			</section>
+		
+		</div>
+		
+		<footer class="footer">
+			<div class="container">
+				Designed by Sree Pillai©
+			</div>
+		</footer>
+
+		<script>
+			
+			const stages = 
+			[
+			
+				{
+					id:1,
+					color:"var(--c1)",
+					pos:{x:10, y:18},
+					title:"Prospect/Recruitment",
+					mapTitle:"Prospects<br>Recruitment",
+					description:"Maya, has shown interest in Dental assistant program at Madison College but not applied yet to the college.",
+					maya:"Maya first discovers Madison College through her friends. She is exploring programs and deciding whether MC feels like the right fit. She attended a scheduled campus visit and impressed with the facillities available at the Truax campus",
+					activities:[
+								"Madison college's recruiting team capture Maya's inquiries from web forms, events, outreach campaigns, and referrals",
+								"Track recruitment touchpoints from emails, calls, campus visits, and information sessions",
+								"The recruitment team match Maya to her favorite dental assistant program",
+								"They measure her engagement and move her into the application funnel"
+								],        
+					support:["Facility Management","Marketing Team","Admission Office","Advising"],
+					academic:["Student Demographics","Program of Study","School / Department", "Academic Term/Period"]
+				},
+				{
+					id:2,
+					color:"var(--c2)",
+					pos:{x:28, y:16},
+					title:"Application",
+					mapTitle:"Application",
+					description:"Maya formally applies to the Dental Assistant program.",
+					maya:"Maya submits her application. She uploads supporting materials and checks whether anything is still missing before the deadline. Also exploring financial aid",
+					activities:[
+								"Maya submitted applications for Dental Assistant program",
+								"She also submitted her transcripts, test scores, and supporting documents",
+								"Madison college admission office tracks application completeness and missing checklist items",
+								"Admission office monitor application status from started to submitted",
+								"Maya decides to apply for FAFSA"
+								],       
+
+					support:["Admission office", "Advising", "Financial Aid", "Testing Center"],
+					academic:["Student Demographics","Academic Period / Year","Program of Study","Student Demographics", "Financial Aid", "Test Scores"]
+				},
+				{
+					id:3,
+					color:"var(--c3)",
+					pos:{x:47, y:24},
+					title:"Admission",
+					mapTitle:"Admission",
+					description:"Madison college evaluate and decide Maya's applications.",
+					maya:"The college reviews Maya’s application, evaluates her eligibility, and admits her. She is going to be the first college educated person from her family! ",
+					activities:[
+								"Madison college reviews Maya's application materials against admission requirements",
+								"Assess Maya's academic eligibility, residency, pre-requisites, and other criteria",
+								"Madison college decides to admit Maya into Dental assistant program",
+								"Communicate admission outcomes and next steps to Maya"
+								],
+
+					support:["Admission Office","Advising"],
+					academic:["Student Demographics","Program of Study","Student Type"]
+				},
+				{
+					id:4,
+					color:"var(--c4)",
+					pos:{x:68, y:19},
+					title:"Enrollment/Matriculation",
+					mapTitle:"Enrollment/<br>Matriculation",
+					description:"Maya officially becomes part of the college.",
+					maya:"Maya accepts her offer, completes onboarding, activates her accounts, joins a cohort, and prepares to begin classes.",
+					activities:[
+								"Maya is excited! She is now admitted to Madison College for her favorite program",
+								"She accepts the offer and turn in the required paper works",
+								"She also applies for scholarships",
+								"Registrar's office determined that Maya can avail in state tuition fee",
+								"Madison college complete her onboarding with orientation, advising, and account activation",
+								"Registar office created her official student records, assignment of academic period, cohort, student type, and program details are done.",
+								"Maya is confirmed to begin coursework",
+								"She has received her Madison Metro bus pass, which makes her commute to/from campus affordable"
+								],
+
+					support:["Registrar Office","Financial Aid","Advising","Bookstore", "Student Financials", "Student Life"],
+					academic:["Student Demographics","Academic Period / year","Student Cohort","Student Type", "Student Financials", "Financial Aid"]
+				},
+				{
+					id:5,
+					color:"var(--c5)",
+					pos:{x:87, y:31},
+					title:"Course Registration",
+					mapTitle:"Course <br>Registration",
+					description:"Maya select and register for courses each academic period/term.",
+					maya:"Maya searches for sections, checks times and formats, resolves holds, and finalizes her class schedule for the term.",
+					activities:[
+								"Maya search for course schedules which gives flexibility to manage her other engagements",
+								"Maya register, add, drop, swap, or waitlist classes",
+								"She validate pre-requisites, holds, capacity, and schedule conflicts",
+								"Finalize schedules for the academic period",
+								"Maya pays the tuition (financial aid) and  schedules for the academic period",
+								"She picks up her text books from the college book store. It has a book rental program",
+								"College's digital equity program allows her to borrow a laptop and hotspot to enable her study"
+								],
+
+					support:["Advising","Bookstore","Financial Aid", "Student Financials", "Digital Equity"],
+					academic:["Student Demographics","Instructor Demographics","Course", "Course Sections", "Course Attributes","Instructor","Instructional Mode","Campus","Academic Period / Year"]
+				},
+				{
+					id:6,
+					color:"var(--c6)",
+					pos:{x:77, y:50},
+					title:"Academic Progression",
+					mapTitle:"Academic <br> Progression",
+					description:"Maya is progressing in her course work towards earning her degree.",
+					maya:"As Maya moves through courses, the college tracks grades, credits, GPA, milestones, and signs that she may need help staying on track.",
+					activities:[
+								"Maya is on track with her enrollments and degree progress",
+								"She attends regular classes, submits her assignements in Brightspace",
+								"She has a cumulative 3.5 GPA now",
+								"Her milestones, retention, and degree progress are being monitored",
+								"She has been provided with timely advising service to keep her on track"
+								],
+
+					support:["Advising","Tutoring","Writing Center","Disability Resources", "Digital Equity", "Learning Management System"],
+					academic:["Student Demographics","Instructor Demographics","Student Cohorts","Program of Study","School / Department", "Retention", "GPA", "Credits"]
+				},
+				{
+					id:7,
+					color:"var(--c7)",
+					pos:{x:55, y:61},
+					title:"Student Experience & Engagement",
+					mapTitle:"Student Experience <br>& Engagement",
+					description:"Maya's non-academic participation and engagement.",
+					maya:"Maya joins clubs, found a part time job at the cafeteria, attends events, uses support services, and builds a sense of belonging outside the classroom.",
+					activities:[
+								"Track participation in campus activities, athletics, and student organizations",
+								"Applied a job under federal work study program",
+								"Maya has joined the college esport team. She is very good at it!",
+								"College evaluates her enagagements in support services and other activities to check impacts on her academic progress"
+								],
+
+					support:["Clubs","Student Athletics","Digital Equity","Federal Work Study","Community Service"],
+					academic:["Student Demographics","Instructor Demographics","Student Demographics","Student Type", "Student Athletics", "Student Worker", "Extra Curricular Activities"]
+				},
+				{
+					id:8,
+					color:"var(--c8)",
+					pos:{x:32, y:74},
+					title:"Completion/Graduation",
+					mapTitle:"Completion /<br> Graduation",
+					description:"Maya successfully completes her Dental assistant program",
+					maya:"Maya reaches the finish line. Her requirements are audited, graduation is processed, and her credential is awarded.",
+					activities:[
+								"Maya satisfied all program requirements and confirm completion eligibility",
+								"She submits her graduation applications and degree clearances",
+								"She has been awarded her degrees",
+								"Big accomplishment for her and the family",
+								],
+
+					support:["Advising","Career Counseling", "Student Financials"],
+					academic:["Student Demographics","Instructor Demographics","Program of Study","Student Cohorts","Academic Period / Year", "Graduation/Completion"]
+				},
+				{
+					id:9,
+					color:"var(--c9)",
+					pos:{x:10, y:86},
+					title:"Post-Graduation Outcomes",
+					description:"College tracks Maya's outcome after leaving the college.",
+					maya:"IE team reaches out to Maya via graduate survey to evaluate her outcome.",
+					activities:[
+								"Maya confirms that she is now employed in a reputed dental office in Madison Area. A job which is aligned with her educational qualification",
+								"She has been earning a decent starting salary",
+								"There is a lot of potential to grow in the job for her. Maya is happy"
+								],
+
+					support:["Career Services","Internship", "Graduate Survey", "Other Surveys"],
+					academic:["Student Demographics","Program of Study","School / Department", "Completion/Graduation"]
+				}
+			];
+
+			const road = document.getElementById("road");
+			const maya = document.getElementById("maya");
+			const titleEl = document.getElementById("title");
+			const descEl = document.getElementById("desc");
+			const mayaStoryEl = document.getElementById("mayaStory");
+			const activitiesEl = document.getElementById("activities");    
+			const supportPills = document.getElementById("supportPills");
+			const academicPills = document.getElementById("academicPills");
+
+			let current = 0;
+			let timer = null;
+
+			function renderList(el, items)
+			{
+				el.innerHTML = items.map(item => `<li>${item}</li>`).join("");
+			}
+
+			function renderPills(el, items, type)
+			{
+				el.innerHTML = items.map(item => `<span class="pill ${type}">${item}</span>`).join("");
+			}
+
+			function moveMaya(stage)
+			{
+				maya.style.left = stage.pos.x + "%";
+				maya.style.top = stage.pos.y + "%";
+			}
+
+			function showStage(index)
+			{
+				current = index;
+				const stage = stages[index];
+
+				document.querySelectorAll(".stage").forEach((el,i) => 
+				{
+					el.classList.toggle("active", i === index);
+				});
+
+				titleEl.textContent  = stage.title;
+				descEl.textContent = stage.description;
+				mayaStoryEl.textContent = stage.maya;
+				renderList(activitiesEl, stage.activities);      
+				renderPills(supportPills, stage.support, "support");
+				renderPills(academicPills, stage.academic, "academic");
+
+				moveMaya(stage);
+			}
+
+			stages.forEach((stage, index) => 
+			{
+				const el = document.createElement("button");
+				el.className = "stage";
+				el.style.left = stage.pos.x + "%";
+				el.style.top = stage.pos.y + "%";
+				el.innerHTML = `
+					<div class="stage-dot" style="background:${stage.color};">${stage.id}</div>
+					<h3>${stage.mapTitle || stage.title}</h3>
+				`;
+				el.addEventListener("click", () => showStage(index));
+				road.appendChild(el);
+			}
+			);
+
+			function playJourney()
+			{
+				if(timer) return;
+				timer = setInterval(() => {
+						current = (current + 1) % stages.length;
+						showStage(current);
+					}, 3200);
+			}
+
+			function pauseJourney()
+			{
+				clearInterval(timer);
+				timer = null;
+			}
+
+			document.getElementById("playBtn").addEventListener("click", playJourney);
+			document.getElementById("pauseBtn").addEventListener("click", pauseJourney);
+
+			showStage(0);
+		</script>
+	</body>
+</html>
